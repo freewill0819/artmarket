@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <div th:replace="/layout/header.html :: fragment-header"></div>
+</head>
+<body>
+
+<div th:replace="/layout/navbar.html :: fragment-nav"></div>
+<div class="container">
+    <form>
+        <input type="hidden" id="id" th:value="${principal.users.id}">
+
+        <div th:if="${principal !=null }">
+            <div class="form-group">
+                <label for="username">아이디</label>
+                <input type="text"  th:value="${principal.getUsername()}" class="form-control" placeholder="Enter username" id="username" readonly>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="email">이메일</label>
+            <input type="email" th:value="${principal.users.getEmail()}" class="form-control" placeholder="Enter email" id="email" >
+        </div>
+
+        <div class="form-group">
+            <label for="password">새 비밀번호</label>
+            <input type="password"  class="form-control" placeholder="Enter password" id="password">
+        </div>
+
+        <div class="form-group">
+            <label for="password">새 비밀번호 확인</label>
+            <input type="password" class="form-control" placeholder="Enter password" id="passwordConfirm">
+        </div>
+
+    </form>
+    <!-- 수정  -->
+    <button id="btn-update" class="btn btn-primary">수정완료</button>
+</div>
+
+<!-- user.js 호출 -->
+
+<footer th:replace="/layout/footer.html :: fragment-footer"></footer>
+
+<script src="/js/user.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</body>
+</html>

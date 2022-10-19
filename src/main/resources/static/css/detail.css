@@ -1,0 +1,9 @@
+.side {
+    display: inline-block;
+    padding: 5px;
+}
+
+.fr {
+    float: right;
+    margin-right: 5px;
+}

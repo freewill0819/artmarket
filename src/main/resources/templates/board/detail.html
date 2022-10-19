@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <div th:replace="/layout/header.html :: fragment-header"></div>
+    <link th:href="@{/css/detail.css}" rel="stylesheet" />
+</head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<sec:authorize access="isAuthenticated()">
+    <sec:authentication property="principal" var="principal"/>
+</sec:authorize>
+
+<body>
+<div th:replace="/layout/navbar.html :: fragment-nav"></div>
+
+<div class="container">
+
+    <div class="form-group">
+        <h3 th:text="${boardDetail.title}">제목</h3>
+    </div>
+    <hr>
+
+    <div>
+        <div class="side">
+            (아이콘)(닉네임:<span th:text="${boardDetail.user.getUsername()}"/>)
+        </div>
+        <div class="side fr">
+            <span id="id" style="display: none" th:text="${boardDetail.getId()}"></span>
+            조회수:<span th:text="${boardDetail.count}"/>
+            추천수:테이블X
+            댓글:<span th:text="${boardDetail.getReply()}"/>
+        </div>
+    </div>
+    <hr>
+
+    <!--   th:utext 를 사용해야 DB안에 html태그까지 모두 적용함(<p> 태그같은거나옴)    -->
+    <div class="form-group">
+        <div th:utext="${boardDetail.content}">글 내용</div>
+    </div>
+    <hr>
+    <br/>
+
+    <div th:align="right">
+        <div th:if="${boardDetail.user.getUsername() == #authentication.name}">
+            <a th:href="@{|/board/${boardDetail.getId()}/updateForm|}"  class="btn btn-primary">수정</a>
+            <button id="btn-delete"  class="btn btn-danger">삭제</button>
+            <button  class="btn btn-success" onclick="history.back()">돌아가기</button>
+        </div>
+
+        <div th:unless="${boardDetail.user.getUsername() == #authentication.name}">
+            <button  class="btn btn-success" onclick="history.back()">돌아가기</button>
+        </div>
+
+    </div>
+
+</div>
+
+<footer th:replace="/layout/footer.html :: fragment-footer"></footer>
+
+<script src="/js/board.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</body>
+</html>
