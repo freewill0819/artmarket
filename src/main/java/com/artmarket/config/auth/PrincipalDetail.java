@@ -1,8 +1,7 @@
 package com.artmarket.config.auth;
 
-import com.artmarket.domain.users.Users;
+import com.artmarket.domain.users.User;
 import lombok.Data;
-import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,9 +11,9 @@ import java.util.Collection;
 @Data
 public class PrincipalDetail implements UserDetails {
 
-    private Users users;
+    private User users;
 
-    public PrincipalDetail(Users users) {
+    public PrincipalDetail(User users) {
         this.users = users;
     }
 

@@ -1,6 +1,6 @@
 package com.artmarket.controller.api;
 
-import com.artmarket.domain.users.Users;
+import com.artmarket.domain.users.User;
 import com.artmarket.dto.ResponseDto;
 import com.artmarket.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-
 @Log4j2
 @RequiredArgsConstructor
 @RestController
@@ -23,14 +21,14 @@ public class UserApiController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/auth/joinProc")
-    public ResponseDto<Integer> save(@RequestBody Users users) {
+    public ResponseDto<Integer> save(@RequestBody User users) {
         userService.join(users);
         log.info("UserApiController.class: save() 호출");
         return new ResponseDto<Integer>(HttpStatus.OK.value(),1); // user.js res 에 1리턴
     }
 
     @PutMapping("/user")
-    public ResponseDto<Integer> updateUser(@RequestBody Users users) {
+    public ResponseDto<Integer> updateUser(@RequestBody User users) {
         userService.update(users);
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(users.getUsername(), users.getPassword()));

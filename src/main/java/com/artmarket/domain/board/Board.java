@@ -1,8 +1,8 @@
 package com.artmarket.domain.board;
 
-import com.artmarket.domain.users.Users;
+import com.artmarket.domain.users.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -32,9 +32,11 @@ public class Board {
 
     @ManyToOne(fetch = FetchType.EAGER)//즉시로딩
     @JoinColumn(name = "userId")
-    private Users user;
+    private User user;
 
-    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties({"board"})
+    @OrderBy("id desc")
     //주인(pk)이 아니다
     private List<Reply> reply;
 

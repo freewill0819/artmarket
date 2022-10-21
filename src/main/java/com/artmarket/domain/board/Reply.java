@@ -1,6 +1,6 @@
 package com.artmarket.domain.board;
 
-import com.artmarket.domain.users.Users;
+import com.artmarket.domain.users.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,7 +30,7 @@ public class Reply {
 
     @ManyToOne //하나의 user는 여러개 답변가능
     @JoinColumn(name = "userId")
-    private Users user;
+    private User user;
 
     @CreationTimestamp
     private Timestamp createDate;

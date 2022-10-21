@@ -2,8 +2,12 @@ package com.artmarket.service;
 
 import com.artmarket.config.auth.PrincipalDetail;
 import com.artmarket.domain.board.Board;
-import com.artmarket.domain.users.Users;
+import com.artmarket.domain.board.Reply;
+import com.artmarket.domain.users.User;
+import com.artmarket.dto.ReplySaveRequestDto;
 import com.artmarket.repository.BoardRepository;
+import com.artmarket.repository.ReplyRepository;
+import com.artmarket.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -12,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -20,8 +25,15 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
+    private final ReplyRepository replyRepository;
+
+
+    private final UserRepository userRepository;
+
+
+
     @Transactional
-    public void saveBoard(Board board, Users users) {
+    public void saveBoard(Board board, User users) {
         board.setCount(0);
         board.setUser(users);
         boardRepository.save(board);
@@ -61,5 +73,21 @@ public class BoardService {
 
         board.setTitle(requestBoard.getTitle());
         board.setContent(requestBoard.getContent());
+    }
+
+
+
+    @Transactional
+    public void replySave(ReplySaveRequestDto replySaveRequestDto) {
+        int result = replyRepository.mSave(replySaveRequestDto.getUserId(), replySaveRequestDto.getBoardId(), replySaveRequestDto.getContent());
+
+        System.out.println("BoardService = " + result);
+    }
+
+    @Transactional
+    public void replyDelete(Long replyId) {
+
+        replyRepository.deleteById(replyId);
+
     }
 }

@@ -1,9 +1,7 @@
 package com.artmarket.domain.users;
 
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -15,7 +13,7 @@ import java.sql.Timestamp;
 @Builder
 @Entity
 //@DynamicInsert //insert시 null인 필드는 제외
-public class Users {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

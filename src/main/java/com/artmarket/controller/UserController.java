@@ -3,13 +3,12 @@ package com.artmarket.controller;
 import com.artmarket.config.auth.PrincipalDetail;
 import com.artmarket.domain.oauth.KakaoProfile;
 import com.artmarket.domain.oauth.OAuthToken;
-import com.artmarket.domain.users.Users;
+import com.artmarket.domain.users.User;
 import com.artmarket.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -30,12 +29,12 @@ import org.springframework.web.client.RestTemplate;
 import java.util.UUID;
 
 @Controller
-
+@RequiredArgsConstructor
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     @Value("${art.key}")
     private String artKey;
@@ -150,25 +149,26 @@ public class UserController {
         // UUID란 중복되지 않는 어떤 특정 값을 만들어내는 알고리즘
         System.out.println("블로그서버 패스워드 : " + artKey);
 
-        Users kakaoUser= Users.builder()
+        User kakaoUser= User.builder()
                 .username(kakaoProfile.getKakao_account().getEmail() + "_" + kakaoProfile.getId())
                 .password(artKey)
                 .email(kakaoProfile.getKakao_account().getEmail())
                 .build();
 
         // 가입자 혹은 비가입자 분기 (이미 회원인지 아닌지 체크)
-        Users originUser = userService.findByUserName(kakaoUser.getUsername());
+        User originUser = userService.findByUserName(kakaoUser.getUsername());
 //
         // 비가입자(null)이면, 회원가입 후 로그인 처리
         if (originUser.getUsername() == null) {
             System.out.println("기존 회원이 아니기에 자동으로 회원가입을 진행합니다.");
-            userService.findByUserName(kakaoUser);
+            userService.join(kakaoUser);
         }
 
         System.out.println("자동 로그인을 진행합니다.");
 
         // 가입자이면 회원가입 없이 로그인 처리
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(kakaoUser.getUsername(), artKey));
+        Authentication authentication =
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(kakaoUser.getUsername(), artKey));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 //
 

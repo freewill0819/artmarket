@@ -30,8 +30,12 @@ let index = {
             dataType: "json" // 응답된 데이터가 json 이라면 javascript 오브젝트로 받음
         }).done(function (res) {
             console.log(res);
-            alert("successful!");
-            location.href = "/";
+            if (res.status === 500) {
+                alert("username 중복으로 인해 회원가입을 실패하였습니다.");
+            } else {
+                alert("회원가입이 완료되었습니다.");
+                location.href="/";
+            }
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });

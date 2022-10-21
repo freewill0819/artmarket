@@ -1,7 +1,7 @@
 package com.artmarket.service;
 
 import com.artmarket.domain.users.RoleType;
-import com.artmarket.domain.users.Users;
+import com.artmarket.domain.users.User;
 import com.artmarket.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,19 +17,19 @@ public class UserService {
     private final BCryptPasswordEncoder encoder;
 
     @Transactional
-    public void join(Users users) {
+    public void join(User user) {
 
-        validateDuplicateUser(users);
+        validateDuplicateUser(user);
 
-        String rawPassword = users.getPassword();
+        String rawPassword = user.getPassword();
         String encPassword = encoder.encode(rawPassword);
-        users.setPassword(encPassword);
-        users.setRole(RoleType.USER);
-        userRepository.save(users);
+        user.setPassword(encPassword);
+        user.setRole(RoleType.USER);
+        userRepository.save(user);
     }
 
-    private void validateDuplicateUser(Users users) {
-        userRepository.findByUsername(users.getUsername()).ifPresent(u -> {
+    private void validateDuplicateUser(User user) {
+        userRepository.findByUsername(user.getUsername()).ifPresent(u -> {
             throw new IllegalArgumentException("이미 존재하는 회원입니다");
         });
     }
@@ -37,25 +37,25 @@ public class UserService {
     // 업데이트
 
     @Transactional
-    public void update(Users users) {
-        Users persistanceUser = userRepository.findById(users.getId()).orElseThrow(() -> {
+    public void update(User user) {
+        User persistanceUser = userRepository.findById(user.getId()).orElseThrow(() -> {
 
             return new IllegalArgumentException("해당 유저를 찾을 수 없습니다");
         });
 
-        String rawPassword = users.getPassword();
+        String rawPassword = user.getPassword();
         String encPassword = encoder.encode(rawPassword);
 
         persistanceUser.setPassword(encPassword);
-        persistanceUser.setEmail(users.getEmail());
+        persistanceUser.setEmail(user.getEmail());
 
         }
 
 
         @Transactional(readOnly = true)
-        public Users findByUserName(String username) {
-            Users users = userRepository.findByUsername(username).orElseGet(() -> { // .orElseGet : 회원을 찾았는데 없으면, 빈 객체 리턴
-                return new Users();
+        public User findByUserName(String username) {
+            User users = userRepository.findByUsername(username).orElseGet(() -> { // .orElseGet : 회원을 찾았는데 없으면, 빈 객체 리턴
+                return new User();
             });
             return users;
         }

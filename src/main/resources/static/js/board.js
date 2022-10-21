@@ -1,15 +1,19 @@
 let index = {
-    init:function () {
-        $("#btn-save").on("click",() =>{
+    init: function () {
+        $("#btn-save").on("click", () => {
             this.save();
         });
 
-        $("#btn-delete").on("click",() =>{
+        $("#btn-delete").on("click", () => {
             this.deleteById();
         });
 
-        $("#btn-update").on("click",() =>{
+        $("#btn-update").on("click", () => {
             this.updateById();
+        });
+
+        $("#btn-reply-save").on("click", () => {
+            this.replySave();
         });
     },
 
@@ -17,8 +21,8 @@ let index = {
     save: function () {
 
         let data = {
-            title : $("#title").val(),
-            content : $("#content").val()
+            title: $("#title").val(),
+            content: $("#content").val()
         };
 
         $.ajax({
@@ -36,13 +40,13 @@ let index = {
         });
     },
 
-    deleteById : function () {
+    deleteById: function () {
 
-        let  id = $("#id").text();
+        let id = $("#id").text();
 
         $.ajax({
             type: "DELETE",
-            url: "/api/board/"+id,
+            url: "/api/board/" + id,
             dataType: "json"
         }).done(function (res) {
             console.log(res);
@@ -53,7 +57,7 @@ let index = {
         });
     },
 
-    updateById : function() {
+    updateById: function () {
 
         let id = $("#id").val();
 
@@ -75,9 +79,50 @@ let index = {
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
-    }
+    },
 
-};
+    replySave: function () {
+
+        let data = {
+            userId:$("#userId").val(),
+            boardId:$("#boardId").val(),
+            content: $("#reply-content").val(),
+        };
+
+        console.log(data);
+
+        $.ajax({
+            // 회원가입 수행 요청
+            type: "POST",
+            url: `/api/board/${data.boardId}/reply`,
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        }).done(function (res) {
+            console.log(res);
+            alert("댓글 작성이 완료되었습니다.");
+            location.href = `/board/${data.boardId}`;
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+
+    },
+
+    replyDelete: function (boardId, replyId) {
+        $.ajax({
+            type: "DELETE",
+            url: `/api/board/${boardId}/reply/${replyId}`,
+            dataType: "json"
+        }).done(function (res) {
+            console.log(res);
+            alert("댓글 삭제를 완료되었습니다.");
+            location.href = `/board/${boardId}`;
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+
+    },
+}
 
 
-index.init()
+index.init();
