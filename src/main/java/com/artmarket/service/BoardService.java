@@ -1,8 +1,8 @@
 package com.artmarket.service;
 
 import com.artmarket.config.auth.PrincipalDetail;
+import com.artmarket.config.auth.PrincipalDetailService;
 import com.artmarket.domain.board.Board;
-import com.artmarket.domain.board.Reply;
 import com.artmarket.domain.users.User;
 import com.artmarket.dto.ReplySaveRequestDto;
 import com.artmarket.repository.BoardRepository;
@@ -14,9 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -57,7 +54,7 @@ public class BoardService {
             return new IllegalArgumentException("해당 게시글을 찾지 못했습니다");
         });
 
-        if (board.getUser().getId() != principal.getUsers().getId()) {
+        if (board.getUser().getId() != principal.getUser().getId()) {
             throw new IllegalArgumentException("해당 글을 삭제할 권한이 없습니다");
         }
 
@@ -79,6 +76,7 @@ public class BoardService {
 
     @Transactional
     public void replySave(ReplySaveRequestDto replySaveRequestDto) {
+
         int result = replyRepository.mSave(replySaveRequestDto.getUserId(), replySaveRequestDto.getBoardId(), replySaveRequestDto.getContent());
 
         System.out.println("BoardService = " + result);

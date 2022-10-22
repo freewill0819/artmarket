@@ -49,10 +49,10 @@ public class UserController {
         return "user/loginForm";
     }
 
-    @GetMapping("/user/updateUser")
+    @GetMapping("/user/updateUserForm")
     public String updateUser(Model model, @AuthenticationPrincipal PrincipalDetail principalDetail) {
         model.addAttribute("principal", principalDetail);
-        return "user/updateUser";
+        return "user/updateUserForm";
     }
 
     @GetMapping("/user/updateForm")
@@ -168,7 +168,7 @@ public class UserController {
 
         // 가입자이면 회원가입 없이 로그인 처리
         Authentication authentication =
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(kakaoUser.getUsername(), artKey));
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(kakaoUser, artKey));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 //
 

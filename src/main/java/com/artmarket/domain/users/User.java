@@ -1,10 +1,12 @@
 package com.artmarket.domain.users;
 
+import com.artmarket.domain.board.Reply;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,4 +36,7 @@ public class User {
 
     @CreationTimestamp //시간 자동 입력
     private Timestamp createDate;
+
+    @OneToMany(mappedBy = "user")
+    private List<Reply> replyList;
 }

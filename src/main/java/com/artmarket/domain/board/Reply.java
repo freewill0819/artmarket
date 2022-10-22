@@ -1,10 +1,7 @@
 package com.artmarket.domain.board;
 
 import com.artmarket.domain.users.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -25,13 +22,19 @@ public class Reply {
     private String content;
 
     @ManyToOne //하나의 게시글에 여러개 답변
-    @JoinColumn(name = "boardId")
+    @JoinColumn(name = "board_id")
     private Board board;
 
     @ManyToOne //하나의 user는 여러개 답변가능
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @CreationTimestamp
     private Timestamp createDate;
+
+    @Override
+    public String toString() {
+        return "Reply [id=" + id + ", content=" + content + ", board=" + board + ", user=" + user + ", createDate="
+                + createDate + "]";
+    }
 }

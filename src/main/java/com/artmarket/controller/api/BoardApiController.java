@@ -20,7 +20,7 @@ public class BoardApiController {
 
     @PostMapping("/api/board")
     public ResponseDto<Integer> saveBoard(@RequestBody Board board, @AuthenticationPrincipal PrincipalDetail principalDetail) {
-        boardService.saveBoard(board, principalDetail.getUsers());
+        boardService.saveBoard(board, principalDetail.getUser());
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
     }
 
@@ -53,7 +53,7 @@ public class BoardApiController {
 
     @DeleteMapping("/api/board/{boardId}/reply/{replyId}")
     public ResponseDto<Integer> replyDelete(@PathVariable Long replyId){
-//        boardService.replyDelete(replyId);
+        boardService.replyDelete(replyId);
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
     }
 }

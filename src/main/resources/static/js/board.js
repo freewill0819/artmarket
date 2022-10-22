@@ -101,7 +101,7 @@ let index = {
         }).done(function (res) {
             console.log(res);
             alert("댓글 작성이 완료되었습니다.");
-            location.href = `/board/${data.boardId}`;
+            location.href = `/auth/board/${data.boardId}`;
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
@@ -116,7 +116,7 @@ let index = {
         }).done(function (res) {
             console.log(res);
             alert("댓글 삭제를 완료되었습니다.");
-            location.href = `/board/${boardId}`;
+            location.href = `/auth/board/${boardId}`;
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });

@@ -1,5 +1,6 @@
 package com.artmarket.controller;
 
+import com.artmarket.config.auth.PrincipalDetail;
 import com.artmarket.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +33,12 @@ public class BoardController {
     }
 
     @GetMapping("/auth/board/{id}")
-    public String BoardDetail(@PathVariable Long id, Model model) {
+    public String BoardDetail(
+            @PathVariable Long id, Model model,
+            @AuthenticationPrincipal PrincipalDetail principalDetail
+            ) {
         model.addAttribute("boardDetail", boardService.BoardDetail(id));
+        model.addAttribute("principalDetail", principalDetail);
         return "board/detail";
     }
 

@@ -11,21 +11,21 @@ import java.util.Collection;
 @Data
 public class PrincipalDetail implements UserDetails {
 
-    private User users;
+    private User user;
 
     public PrincipalDetail(User users) {
-        this.users = users;
+        this.user = users;
     }
 
 
     @Override
     public String getPassword() {
-        return users.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return users.getUsername();
+        return user.getUsername();
     }
 
     @Override //계정만료 true 만료안됨
@@ -52,7 +52,7 @@ public class PrincipalDetail implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collectors = new ArrayList<>();
         collectors.add(() -> {
-            return "ROLE_" + users.getRole();
+            return "ROLE_" + user.getRole();
         });
         return collectors;
     }

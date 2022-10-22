@@ -7,9 +7,6 @@
 </head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<sec:authorize access="isAuthenticated()">
-    <sec:authentication property="principal" var="principal"/>
-</sec:authorize>
 
 <body>
 <div th:replace="/layout/navbar.html :: fragment-nav"></div>
@@ -52,65 +49,65 @@
         </div>
 
     </div>
-<!--    <div class = "card">-->
-<!--        <form>-->
-<!--            <input type = "hidden" id="userId" th:value="${principal}">-->
-<!--            <input type="hidden" id="boardId" th:value="${boardDetail.id}">-->
-<!--            <div class="card-body">-->
-<!--                <textarea id="reply-content" class="form-control" rows="1"></textarea>-->
-<!--            </div>-->
-<!--            <div class = "card-footer">-->
-<!--                <button type="button" id="btn-reply-save" class="btn btn-primary">입력</button>-->
-<!--            </div>-->
-<!--        </form>-->
-<!--    </div>-->
-<!--    <br />-->
-<!--    <div class = "card">-->
-<!--        <div class = "card-header">댓글 리스트</div>-->
-<!--        <ul th:each="reply : ${boardDetail.reply}" id="reply-box" class="list-group">-->
-<!--            <li th:id="|reply-${reply.id}|" class="list-group-item">-->
-<!--            <li class="list-group-item">-->
-<!--                <div class = "d-flex ">-->
-<!--                    <div th:text="|작성자 : ${reply.user.username} &nbsp|">작성자: yuju &nbsp;</div>-->
-<!--                    <button th:onclick="|javascript:index.replyDelete(${boardDetail.id}, ${reply.id})|" class="badge">삭제</button>-->
-<!--                </div>-->
-
-<!--                <div th:text="${reply.content}">댓글 내용</div>-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--    </div>-->
-    <div class="card mb-2 mt-5">
-
-        <div class="card-header bg-light">
-            <i class="fa fa-comment fa"></i> 댓글
-        </div>
+    <div class = "card">
         <form>
+            <input type = "hidden" id="userId" th:value="${principalDetail.user.id}">
+            <input type="hidden" id="boardId" th:value="${boardDetail.id}">
             <div class="card-body">
-                <input type="hidden" id="boardId" th:value="${boardDetail.id}">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <textarea class="form-control" id="reply-content" rows="1"></textarea>
-                        <button id="btn-reply-save" type="button" class="btn btn-dark mt-3">등록</button>
-                    </li>
-                </ul>
+                <textarea id="reply-content" class="form-control" rows="1"></textarea>
+            </div>
+            <div class = "card-footer">
+                <button type="button" id="btn-reply-save" class="btn btn-primary">입력</button>
             </div>
         </form>
     </div>
-    <br/>
-    <div class="card">
-        <div class="card-header">댓글</div>
-        <ul id="reply--box" class="list-group" th:each="reply : ${boardDetail.reply}">
-            <li th:id="'reply--' + ${reply.id}" class="list-group-item d-flex justify-content-between">
-                <div th:text="${reply.content}"></div>
-                <div class="d-flex" >
-                    <span class="text-monospace">작성자: &nbsp;</span><div class="text-monospace" th:text="${reply.user.username}"></div>
-                    <span th:if="${reply.user.id == #authentication.principal.id}">
-                        <button th:onclick="|replyIndex.replyDelete('${board.id}', '${reply.id}')|" class="badge btn-danger" style="margin-left: 10px;">삭제</button>
-                    </span>
+    <br />
+    <div class = "card">
+        <div class = "card-header">댓글 리스트</div>
+        <ul th:each="reply : ${boardDetail.reply}" id="reply-box" class="list-group">
+            <li th:id="|reply-${reply.id}|" class="list-group-item">
+            <li class="list-group-item">
+                <div class = "d-flex ">
+                    <div th:text="|작성자 : ${reply.user.username} &nbsp|">작성자: yuju &nbsp;</div>
+                    <button th:onclick="|javascript:index.replyDelete(${boardDetail.id}, ${reply.id})|" class="badge">삭제</button>
                 </div>
+
+                <div th:text="${reply.content}">댓글 내용</div>
             </li>
         </ul>
     </div>
+<!--    <div class="card mb-2 mt-5">-->
+
+<!--        <div class="card-header bg-light">-->
+<!--            <i class="fa fa-comment fa"></i> 댓글-->
+<!--        </div>-->
+<!--        <form>-->
+<!--            <div class="card-body">-->
+<!--                <input type="hidden" id="boardId" th:value="${boardDetail.id}">-->
+<!--                <ul class="list-group list-group-flush">-->
+<!--                    <li class="list-group-item">-->
+<!--                        <textarea class="form-control" id="reply-content" rows="1"></textarea>-->
+<!--                        <button id="btn-reply-save" type="button" class="btn btn-dark mt-3">등록</button>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--    <br/>-->
+<!--    <div class="card">-->
+<!--        <div class="card-header">댓글</div>-->
+<!--        <ul id="reply&#45;&#45;box" class="list-group" th:each="reply : ${boardDetail.reply}">-->
+<!--            <li th:id="'reply&#45;&#45;' + ${reply.id}" class="list-group-item d-flex justify-content-between">-->
+<!--                <div th:text="${reply.content}"></div>-->
+<!--                <div class="d-flex" >-->
+<!--                    <span class="text-monospace">작성자: &nbsp;</span><div class="text-monospace" th:text="${reply.user.username}"></div>-->
+<!--                    <span th:if="${reply.user.id == #authentication.principal.id}">-->
+<!--                        <button th:onclick="|replyIndex.replyDelete('${board.id}', '${reply.id}')|" class="badge btn-danger" style="margin-left: 10px;">삭제</button>-->
+<!--                    </span>-->
+<!--                </div>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
     <br />
 
 
