@@ -33,14 +33,8 @@ public class SecurityConfig  {
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .rememberMe()
-                .rememberMeParameter("remember-me")
-                .tokenValiditySeconds(3600)
-                .alwaysRemember(false)
-                .userDetailsService(principalDetailService)
-                .and()
                 .authorizeRequests()
-                .antMatchers("/*", "/auth/**", "/css/**", "/js/**","/image/**")
+                .antMatchers("/", "/auth/**", "/css/**", "/js/**", "/img/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
