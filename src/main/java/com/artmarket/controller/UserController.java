@@ -168,7 +168,7 @@ public class UserController {
 
         // 가입자이면 회원가입 없이 로그인 처리
         Authentication authentication =
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(kakaoUser, artKey));
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(kakaoUser.getUsername(), artKey));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 //
 

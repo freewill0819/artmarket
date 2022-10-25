@@ -29,9 +29,26 @@ let index = {
             contentType: "application/json; charset=utf-8", // body 데이터가 어떤 type 인지
             dataType: "json" // 응답된 데이터가 json 이라면 javascript 오브젝트로 받음
         }).done(function (res) {
-            console.log(res);
-            if (res.status === 500) {
-                alert("username 중복으로 인해 회원가입을 실패하였습니다.");
+            if(res.status == 400) {
+                alert("회원가입 입력 정보를 다시 확인해주십시오.")
+
+                if(res.data.hasOwnProperty('valid_username')){
+                    $('#valid_username').text(res.data.valid_username);
+                    $('#valid_username').css('color', 'red');
+                }
+                else $('#valid_username').text('');
+
+                if(res.data.hasOwnProperty('valid_password')){
+                    $('#valid_password').text(res.data.valid_password);
+                    $('#valid_password').css('color', 'red');
+                }
+                else $('#valid_password').text('');
+
+                if(res.data.hasOwnProperty('valid_email')){
+                    $('#valid_email').text(res.data.valid_email);
+                    $('#valid_email').css('color', 'red');
+                }
+                else $('#valid_email').text('');
             } else {
                 alert("회원가입이 완료되었습니다.");
                 location.href="/";
