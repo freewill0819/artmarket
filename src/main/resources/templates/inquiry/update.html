@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <div th:replace="/layout/header.html :: fragment-header"></div>
+    <style>
+        #content_text {
+            width: 80%;
+            height: 300px;
+            font-size: 1em;
+            border: 1px solid #d3d3d3;
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="/layout/navbar.html :: fragment-nav"></div>
+
+<div class="container">
+    <form enctype="multipart/form-data" id="form">
+        <div style="display: none" id="id"  th:text="${inquiry.getId()}"></div>
+        <div class="form-group">
+            <input th:value="${inquiry.getTitle()}" type="text"class="form-control" placeholder="제목" id="title">
+        </div>
+
+        <div class="form-group">
+            <textarea th:utext="${inquiry.getContent()}" id="content_text" cols="15" placeholder="문의 사항 쓰기"></textarea>
+        </div>
+
+        <div class="form-group">
+            <div th:if="${inquiry.img != null}">
+                <img th:src="@{/img/display?fileSource=}+${inquiry.img}" alt="첨부이미지" width="300px" id="previous_img"/>
+                <button type="button" id="delete_pre_img">사진 삭제</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <div id="new_post_file">
+                <div class="filebox">
+                    <label for="file">업로드</label>
+                    <input type="file" accept="image/*" id="file">
+                </div>
+            </div>
+            <div id="wrapper_blob_img">
+                <img id="blob_img" src="">
+            </div>
+        </div>
+
+        <button type="button" id="btn-update" class="btn btn-primary" >수정</button>
+    </form>
+</div>
+<footer th:replace="/layout/footer.html :: fragment-footer"></footer>
+
+<script src="/js/inquiry.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <div th:replace="/layout/header.html :: fragment-header"></div>
+    <link th:href="@{/css/detail.css}" rel="stylesheet" />
+</head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<body>
+<div th:replace="/layout/navbar.html :: fragment-nav"></div>
+
+<div class="container">
+
+    <div class="form-group">
+        <h3 th:text="${inquiry.title}">제목</h3>
+        <div style="display: none" id="inquiryId"  th:text="${inquiry.getId()}"></div>
+    </div>
+    <hr>
+
+    <div>
+        <div class="side">
+            (문의자: <span th:text="${inquiry.user.getUsername()}"/>)
+        </div>
+    </div>
+    <hr>
+
+    <div class="form-group">
+        <div>문의 내용 :</div>
+        <div th:utext="${inquiry.content}">글 내용</div>
+<!--        이미지 있으면 보여주기-->
+        <img th:src="@{/img/display?fileSource=}+${inquiry.img}" alt="첨부이미지" th:if="${inquiry.img != null}" width="300px"/>
+    </div>
+    <hr>
+    <br/>
+
+    <div th:align="right">
+        <div>
+            <a th:if="${inquiry.user.getUsername() == #authentication.name}" th:href="@{|/inquiry/${inquiry.getId()}/update|}"  class="btn btn-primary">수정</a>
+            <button type="button" id="btn-delete"  class="btn btn-danger">삭제</button>
+        </div>
+    </div>
+
+<!--    관리자일 때, 답변을 달기 전 달기 가능-->
+    <div sec:authorize="hasRole('ADMIN')" th:if="${inquiry.confirm} == ${X}">
+        <div class = "card">
+            <form>
+                <div class="card-body">
+                    <textarea id="answer-content" class="form-control" rows="3"></textarea>
+                </div>
+                <div class = "card-footer">
+                    <button type="button" id="btn-answer-save" class="btn btn-primary">입력</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br />
+    <div class = "card" th:unless="${inquiry.confirm} == ${X}">
+        <p th:utext="${inquiry.answer}" id="answer">답변내용</p>
+        <textarea style="display: none" th:text="${inquiry.answer}" id="answer-edit" class="form-control" rows="3"></textarea>
+        <div></div>
+        <div class = "d-flex " sec:authorize="hasRole('ADMIN')">
+            <button type="button" id="btn-answer-update" class="btn btn-primary">수정</button>
+            <button type="button" style="display: none" id="btn-answer-edit" class="btn btn-primary">입력</button>
+        </div>
+    </div>
+    <br />
+
+
+</div>
+
+<footer th:replace="/layout/footer.html :: fragment-footer"></footer>
+
+<script src="/js/inquiry.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</body>
+</html>
