@@ -74,7 +74,6 @@ public class InquiryController {
         if(auth || inquiry.checkAdmin(user)) {
             model.addAttribute("inquiry", detail);
             model.addAttribute("X", Confirm.X);
-            model.addAttribute("principalDetail", principalDetail);
             return "inquiry/detail";
         } else {
             return noAuth(model);
