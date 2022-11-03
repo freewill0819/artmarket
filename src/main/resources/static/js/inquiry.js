@@ -219,6 +219,6 @@ function saveEditAnswer() {
 const filter = document.getElementById("filter_select");
 if(filter != null) {
     filter.addEventListener("change", () => {
-        location.href = "/inquiry/confirm/" + filter.value;
+        location.href = "/inquiry" + filter.value;
     })
 }

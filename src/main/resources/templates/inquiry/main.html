@@ -9,8 +9,9 @@
 
 <select id="filter_select">
   <option value="">--필터 옵션--</option>
-  <option value="O">답변 : O</option>
-  <option value="X">답변 : X</option>
+  <option value="">전체 보기</option>
+  <option value="/confirm/O">답변 : O</option>
+  <option value="/confirm/X">답변 : X</option>
 </select>
 
   <div class="card m-2" th:each="inquiry : ${inquiryList.getContent()}">
