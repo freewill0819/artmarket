@@ -40,7 +40,7 @@ public class SecurityConfig  {
                 .userDetailsService(principalDetailService)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/auth/**", "/css/**", "/js/**", "/image/**")
+                .antMatchers("/", "/auth/**", "/css/**", "/js/**", "/image/**","/files/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

@@ -17,7 +17,9 @@ let index = {
         });
     },
 
+    uploadFile: function (){
 
+    },
     save: function () {
 
         let data = {
@@ -122,6 +124,7 @@ let index = {
         });
 
     },
+
 }
 
 

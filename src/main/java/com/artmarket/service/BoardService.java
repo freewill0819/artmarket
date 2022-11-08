@@ -1,11 +1,13 @@
 package com.artmarket.service;
 
 import com.artmarket.config.auth.PrincipalDetail;
-import com.artmarket.config.auth.PrincipalDetailService;
 import com.artmarket.domain.board.Board;
-import com.artmarket.domain.users.User;
+import com.artmarket.domain.board.File;
+import com.artmarket.dto.BoardDto;
+import com.artmarket.dto.FileDto;
 import com.artmarket.dto.ReplySaveRequestDto;
 import com.artmarket.repository.BoardRepository;
+import com.artmarket.repository.FileRepository;
 import com.artmarket.repository.ReplyRepository;
 import com.artmarket.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -24,16 +29,14 @@ public class BoardService {
 
     private final ReplyRepository replyRepository;
 
-
+    private final FileRepository fileRepository;
     private final UserRepository userRepository;
 
 
-
     @Transactional
-    public void saveBoard(Board board, User users) {
-        board.setCount(0);
-        board.setUser(users);
-        boardRepository.save(board);
+    public Long saveBoard(BoardDto boardDto) {
+
+        return boardRepository.save(boardDto.toEntity()).getId();
     }
 
     public Page<Board> boardList(Pageable pageable) {
@@ -73,7 +76,6 @@ public class BoardService {
     }
 
 
-
     @Transactional
     public void replySave(ReplySaveRequestDto replySaveRequestDto) {
 
@@ -87,5 +89,25 @@ public class BoardService {
 
         replyRepository.deleteById(replyId);
 
+    }
+
+    public void saveBoard(Board board, PrincipalDetail principalDetail) {
+        BoardDto boardDto = BoardDto.builder()
+                .id(board.getId())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .build();
+    }
+    @Transactional
+    public BoardDto getPost(Long id) {
+        Board board = boardRepository.findById(id).get();
+
+        BoardDto boardDto = BoardDto.builder()
+                .id(board.getId())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .fileId(board.getFileId())
+                .build();
+        return boardDto;
     }
 }
