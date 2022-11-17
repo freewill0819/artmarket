@@ -28,6 +28,8 @@ import java.util.UUID;
 public class InquiryServiceImpl implements InquiryService {
 
     private final InquiryRepository inquiryRepository;
+    private final ImageServiceImpl imageService;
+    private final String imgPath = "C:/artmarket/image/inquiry/";
 
 //    @Override
 //    public Page<Inquiry> inquiryList() {
@@ -69,7 +71,7 @@ public class InquiryServiceImpl implements InquiryService {
     @Override
     public void saveInquiryFile(String title, String content,MultipartFile file, User user) throws IOException {
         // 이미지 저장
-        String fileSource = saveFile(file, user);
+        String fileSource = imageService.saveFile(file, user, imgPath);
 
         // insert
         Inquiry inquiry = new Inquiry();
@@ -77,13 +79,6 @@ public class InquiryServiceImpl implements InquiryService {
         inquiry.setContent(content);
         inquiry.setImg(fileSource);
         saveInquiry(inquiry,user);
-    }
-
-    /**
-     * 확장자 추출
-     */
-    private String findExt(@NotNull String fileName) {
-        return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
     @Override
@@ -107,7 +102,7 @@ public class InquiryServiceImpl implements InquiryService {
 
         // delete 면 사진 삭제
         if(editInquiry.getImg().equals("delete")) {
-            deleteImg(inquiry);
+            imageService.deleteImg(inquiry);
             inquiry.setImg(null);
         }
         inquiry.setTitle(editInquiry.getTitle());
@@ -122,11 +117,11 @@ public class InquiryServiceImpl implements InquiryService {
 
         // 기존 이미지 삭제
         if (inquiry.getImg() != null) {
-            deleteImg(inquiry);
+            imageService.deleteImg(inquiry);
         }
 
         // 새로운 이미지 저장
-        String fileSource = saveFile(file, inquiry.getUser());
+        String fileSource = imageService.saveFile(file, inquiry.getUser(),imgPath);
 
         // update
         inquiry.setTitle(title);
@@ -144,7 +139,7 @@ public class InquiryServiceImpl implements InquiryService {
         // 권한 확인
         if (checkAuth(detail(id), user) || checkAdmin(user)) {
             if (inquiry.getImg() != null) {
-                deleteImg(inquiry);
+                imageService.deleteImg(inquiry);
             }
             inquiryRepository.deleteById(id);
         }
@@ -158,46 +153,4 @@ public class InquiryServiceImpl implements InquiryService {
         inquiryRepository.save(inquiry);
     }
 
-    /**
-     * 이미지 저장
-     */
-    private String saveFile(MultipartFile file, User user) throws IOException {
-        // 이미지 저장 경로 설정
-        String path = "C:/artmarket/image/inquiry/";
-        String userid = String.valueOf(user.getId());
-        Path filePath = Paths.get(path,userid);
-        if (Files.notExists(filePath)) {
-            Files.createDirectories(filePath);
-        }
-
-        // 확장자
-        String ext = findExt(Objects.requireNonNull(file.getOriginalFilename()));
-
-        // 파일 이름 랜덤 생성
-        UUID uuid = UUID.randomUUID();
-        String saveName = userid + user.getUsername() + uuid + "." + ext;
-
-        Path targetPath = Paths.get(filePath.toString(), saveName);
-
-        // 이미지 저장
-        file.transferTo(targetPath);
-
-        /*
-        Window 에서 이미지 경로 불러올 때 "\" 일 때 오류 발생, "/"로 변경
-        Mac, Linux 에서는 미확인
-         */
-        return targetPath.toString().replace("\\","/");
-    }
-
-    /**
-     * 이미지 삭제
-     */
-    private void deleteImg(Inquiry inquiry){
-        try {
-            File file = new File(inquiry.getImg());
-            file.delete();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

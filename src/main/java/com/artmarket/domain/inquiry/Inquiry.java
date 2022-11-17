@@ -1,7 +1,6 @@
 package com.artmarket.domain.inquiry;
 
 import com.artmarket.domain.base.BaseEntity;
-import com.artmarket.domain.users.RoleType;
 import com.artmarket.domain.users.User;
 import lombok.*;
 
