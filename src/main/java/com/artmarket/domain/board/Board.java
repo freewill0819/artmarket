@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -27,8 +28,11 @@ public class Board {
     @Lob //일반적인 데이터베이스에서 저장하는 길이인 255개 이상의 문자를 저장하고 싶을 때 지정한다.
     private String content;
 
-//    @ColumnDefault("0")
-    private int count;
+    @Column
+    private Long fileId;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<File> files = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)//즉시로딩
     @JoinColumn(name = "userId")
@@ -43,5 +47,11 @@ public class Board {
     @CreationTimestamp
     private Timestamp createDate;
 
-
+    @Builder
+    public Board(Long id, String title, String content, Long fileId) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.fileId = fileId;
+    }
 }
