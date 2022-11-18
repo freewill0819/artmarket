@@ -1,5 +1,6 @@
 package com.artmarket.domain.board;
 
+import com.artmarket.domain.base.BaseEntity;
 import com.artmarket.domain.users.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -15,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Board {
+public class Board extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,9 +40,4 @@ public class Board {
     @OrderBy("id desc")
     //주인(pk)이 아니다
     private List<Reply> reply;
-
-    @CreationTimestamp
-    private Timestamp createDate;
-
-
 }

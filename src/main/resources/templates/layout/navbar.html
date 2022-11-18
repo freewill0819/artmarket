@@ -12,9 +12,19 @@
                 <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link" href="/board/saveForm">글쓰기</a></li>
                     <li class="nav-item"><a class="nav-link" href="/user/updateUserForm">회원정보</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/inquiry">나의문의</a></li>
                     <li class="nav-item"><a class="nav-link" href="/logout">로그아웃</a></li>
                 </ul>
-                </div>
+            </div>
+
+            <!-- 로그인 되었을 때 - 관리자 -->
+            <div sec:authorize="hasRole('ADMIN')">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/board/saveForm">글쓰기</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/user/updateUserForm">관리자 정보</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/inquiry">문의사항</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/logout">로그아웃</a></li>
+                </ul>
             </div>
 
             <!-- 로그인 안 되었을 때 -->

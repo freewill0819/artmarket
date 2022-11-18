@@ -33,7 +33,7 @@
         <!-- 페이지 번호 버튼 시작 -->
         <li th:each="page: ${#numbers.sequence(1, boardList.totalPages)}"
             th:if="${page >= boardList.number and page <= boardList.number + 4}"
-            th:classappend="${page == boardList.number} ? 'active'"
+            th:classappend="${page == boardList.number} ? 'disabled'"
             class="page-item">
             <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
         </li>
